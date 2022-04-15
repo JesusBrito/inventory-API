@@ -20,7 +20,11 @@ export async function updateProduct(req: Request, res: Response) {
     const query = req.query;
     let id = query.id
     const productStored = await ProductModel.findByIdAndUpdate(id, req.body);
-    res.status(200).send({ product: productStored });
+    if(productStored){
+      res.status(200).send({ product: productStored });
+    }else{
+      res.status(404).send({ message: "El producto no existe" });
+    }
   } catch (error) {
     console.log("🚀 ~ file: products.ts ~ line 27 ~ updateProduct ~ error", error)
     return res.status(500).send({ message: error });
@@ -32,10 +36,15 @@ export async function updateProductImage(req: Request, res: Response) {
     const query = req.query;
     let id = query.id
     let product = await ProductModel.findById(id);
-    const imageUploadResult = await uploadCloudinaryImage(req.file!.path)
-    product!.imageUrl = imageUploadResult!.url
-    product?.save()
-    res.status(200).send({ product: product });
+    if(product){
+      const imageUploadResult = await uploadCloudinaryImage(req.file!.path)
+      product!.imageUrl = imageUploadResult!.url
+      product?.save()
+      res.status(200).send({ product: product });
+    }else{
+      res.status(404).send({ message: "El producto no existe" });
+    }
+
   } catch (error) {
     console.log("🚀 ~ file: products.ts ~ line 27 ~ updateProduct ~ error", error)
     return res.status(500).send({ message: error });
@@ -57,7 +66,12 @@ export async function deleteProduct(req: Request, res: Response) {
     const query = req.query;
     let id = query.id
     let responseDeleted = await ProductModel.deleteOne({ _id: id });
-    return res.status(200).send({ message: "Se eliminó el producto", });
+    console.log("🚀 ~ file: products.ts ~ line 60 ~ deleteProduct ~ responseDeleted", responseDeleted)
+    if(responseDeleted.deletedCount>0){
+      return res.status(200).send({ message: "Se eliminó el producto" });
+    }else{
+      return res.status(404).send({ message: "El producto no existe" });
+    }
   } catch (error) {
     console.log("🚀 ~ file: products.ts ~ line 9 ~ getProducts ~ error", error)
     return res.status(500).send({ message: error,  });
