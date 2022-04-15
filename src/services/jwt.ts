@@ -6,7 +6,7 @@ export async function createToken(user: User) {
         id: user._id
     }
     const token = jsonwebtoken.sign(payload, process.env.SECRET_TOKEN || "String_Secreto", {
-        expiresIn: "2h",
+        expiresIn: "24h",
       })
     return token
 };

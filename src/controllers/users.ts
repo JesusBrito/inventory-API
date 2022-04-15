@@ -11,7 +11,7 @@ export async function createUser(req: Request, res: Response) {
     const userStored = await user.save();
     res.status(200).send({ user: userStored });
   } catch (error) {
-    console.log(error);
+    console.log("🚀 ~ file: users.ts ~ line 14 ~ createUser ~ error", error);
     return res.status(500).send({ message: error });
   }
 }
@@ -38,7 +38,7 @@ export async function login(req: Request, res: Response) {
       res.status(500).send({ message: "El usuario no existe" });
     }
   } catch (error) {
-    console.log(error);
+    console.log("🚀 ~ file: users.ts ~ line 41 ~ login ~ error", error);
     return res.status(500).send({ message: error });
   }
 }

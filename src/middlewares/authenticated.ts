@@ -14,7 +14,7 @@ export function ensureAuth(req: Request, res: Response, next: NextFunction){
             const decoded = jsonwebtoken.verify(token, process.env.SECRET_TOKEN || "String_Secreto");
             next();
           } catch(err) {
-              console.log(err);
+            console.log("🚀 ~ file: authenticated.ts ~ line 17 ~ ensureAuth ~ err", err)
             return res.status(401).send({message:'Autenticación inválida'});
           }
     }

@@ -1,5 +1,5 @@
 import express from 'express'
-import {createUser, login} from '../controllers/user'
+import {createUser, login} from '../controllers/users'
 import { ensureAuth } from '../middlewares/authenticated';
 
 const api = express.Router();
