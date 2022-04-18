@@ -21,7 +21,8 @@ export async function updateProduct(req: Request, res: Response) {
     let id = query.id
     const productStored = await ProductModel.findByIdAndUpdate(id, req.body);
     if(productStored){
-      res.status(200).send({ product: productStored });
+      let product = await ProductModel.findById(id);
+      res.status(200).send({ product: product });
     }else{
       res.status(404).send({ message: "El producto no existe" });
     }
@@ -36,6 +37,7 @@ export async function updateProductImage(req: Request, res: Response) {
     const query = req.query;
     let id = query.id
     let product = await ProductModel.findById(id);
+    console.log("🚀 ~ file: products.ts ~ line 39 ~ updateProductImage ~ req.file", req)
     if(product){
       const imageUploadResult = await uploadCloudinaryImage(req.file!.path)
       product!.imageUrl = imageUploadResult!.url
